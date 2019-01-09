@@ -51,7 +51,7 @@ values."
              shell-default-position 'bottom)
      spell-checking
      ;; syntax-checking
-     version-control
+     ;;version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -95,7 +95,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update nil
+   dotspacemacs-check-for-update t
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -323,9 +323,16 @@ you should place your code here."
     (setq org-startup-indented t))
   (setq org-todo-keywords
         '((sequence "TODO" "DOING" "WAITING" "|" "DONE" "ABORTED")))
- ;; (add-hook 'prog-mode-hook 'real-auto-save-mode)
-;;  (setq real-auto-save-interval 1)
-
+  (setq icloud-directory "~/orgfiles")
+  (setq org-capture-templates
+        '(("j" "随手记" entry (file+olp+datetree
+                               (lambda()(concat icloud-directory "/journal.org")))
+           "* %?\n%U\n")
+          ("t" "todo" entry (file
+                             (lambda()(concat icloud-directory "/todo.org")))
+           "* TODO %?\n%U\n%a\n")
+          )
+        )
   (spacemacs//set-monospaced-font   "hack" "Hiragino Sans GB" 14 16)
   )
 
@@ -345,3 +352,23 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (yasnippet-snippets writeroom-mode visual-fill-column symon string-inflection spaceline-all-the-icons password-generator overseer org-brain nameless helm-xref helm-purpose window-purpose imenu-list helm-org-rifle evil-org evil-lion evil-goggles evil-cleverparens paredit editorconfig doom-modeline eldoc-eval shrink-path counsel-projectile counsel swiper ivy chinese-conv centered-cursor-mode browse-at-remote font-lock+ dotenv-mode auto-save-buffers-enhanced save-visited-files focus-autosave-mode super-save real-auto-save all-the-icons memoize doom-Iosvkem-theme pyim pyim-basedict pangu-spacing find-by-pinyin-dired ace-pinyin pinyinlib ranger doom-themes xterm-color unfill shell-pop reveal-in-osx-finder pbcopy osx-trash osx-dictionary org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term launchctl htmlize helm-company helm-c-yasnippet gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-commit with-editor git-gutter fuzzy flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
