@@ -1,0 +1,33 @@
+* 微服务架构
+** TODO 服务降级
+通用的可配置的服务降级方案，
+*** 调研
+参考 hystrix。
+*** code test
+* 基础理论
+** TODO 拓扑结构图
+以 web 为中心的原理拓扑
+*** log 
+stdout stderr stdin
+- [ ] c 实现
+** 数据结构和算法
+*** DOING 刷题
+* 有趣的轮子
+重复发明一下
+** TODO json 系列化
+* 别人的代码
+不会就要学
+* DOING glide
+* tools
+** DONE goland                                                        :code:
+重新梳理一遍工作流
+- [X] keymap
+- [X] plugin:file watcher : 
+    - [X] gofmt 
+    - [X] goimports
+    - [X] gometalinter
+- [X] code Template
+** DONE oneNote                                                       :note:
+利用 onenote 生成的链接，记录随手笔记
+** DONE spacemacs + beorg + icloud + vmware                           :note:
+实现多平台同步笔记

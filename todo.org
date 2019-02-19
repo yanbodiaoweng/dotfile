@@ -1,0 +1,104 @@
+* DONE 确认 simple menu flag 上线时间                                                 :work:
+** DONE test olp
+[2019-01-10 Thu 14:34]
+* DONE fork spacemacs for self
+* DONE prd deploy                                                               :work:
+SCHEDULED: <2019-01-10 Thu>
+[2019-01-09 Wed 20:40]
+* 2019
+** 2019-01 January
+*** 2019-01-10 Thursday
+**** DONE test datetree
+[2019-01-10 Thu 14:36]
+**** DONE test olp + datetree
+[2019-01-10 Thu 14:37]
+**** DONE test datetree again
+CLOSED: [2019-02-15 Fri 18:48]
+[2019-01-10 Thu 14:45]
+**** TODO learn english
+[2019-01-10 Thu 15:31]
+**** DONE make sence : http request with ctx
+SCHEDULED: <2019-01-10 Thu>
+[2019-01-10 Thu 16:57]
+**** DONE discuss with mengyuan : interface in a struct
+SCHEDULED: <2019-01-11 Fri>
+[2019-01-10 Thu 18:30]
+**** DONE discuss with mengyuan : emptyCtx
+SCHEDULED: <2019-01-11 Fri>
+[2019-01-10 Thu 18:52]
+*** 2019-01-19 Saturday
+**** ABORTED emacs 内长文本换行
+[2019-01-19 Sat 00:13]
+**** ABORTED 抢挂号：宣武医院，天坛医院
+SCHEDULED: <2019-01-19 Sat>
+- Note taken on [2019-01-30 Wed 13:38] \\
+  最后选择在门口的冠美口腔做了第一期治疗
+[2019-01-19 Sat 00:13]
+*** 2019-01-21 Monday
+**** TODO pax-api 增加添加 requestId 的中间件                                           :work:
+[2019-01-21 Mon 17:59]
+*** 2019-01-24 Thursday
+**** TODO 桌面系统的拓扑                                                               :折腾:
+DEADLINE: <2019-01-26 Sat>
+[2019-01-24 Thu 08:37]
+*** 2019-01-26 Saturday
+**** TODO 保险 调研
+公司保险，商业保险
+[2019-01-26 Sat 18:23]
+*** 2019-01-27 Sunday
+**** DONE 生日礼物
+SCHEDULED: <2019-01-27 Sun>
+
+- Note taken on [2019-01-30 Wed 13:40] \\
+  KLASSE14 女表 @京东 ¥1000
+[2019-01-27 Sun 00:14]
+**** DONE 过年回家
+CLOSED: [2019-02-15 Fri 18:48] SCHEDULED: <2019-01-27 Sun>
+[2019-01-27 Sun 00:17]
+*** 2019-01-30 Wednesday
+**** DOING vim & emacs 开发
+SCHEDULED: <2019-01-30 Wed>
+[2019-01-30 Wed 13:34]
+**** TODO 老婆的春招
+SCHEDULED: <2019-01-30 Wed>
+[2019-01-30 Wed 13:35]
+** 2019-02 February
+*** 2019-02-02 Saturday
+**** DONE 春节回家出发时需要做好准备
+SCHEDULED: <2019-02-03 Sun>
+
+- [X] 8 点起床洗澡
+- [X] 装包：mac + pad + switch + 虾 + 新袜子和内裤
+- [X] 猫： 猫粮 + 水
+- [X] 收拾垃圾
+- [X] 口袋里装 身份证 + 耳机 + 一张建行卡 + 红包袋子
+- [X] 老婆的备忘录 check
+- [X] 10 点左右出发
+
+[2019-02-02 Sat 23:38]
+*** 2019-02-16 Saturday
+**** DONE evil or not ? why?
+- Note taken on [2019-02-18 Mon 16:35] \\
+  这种决定造成的后果非常小，根本没必要犹豫，evil 的功能更多当然用 evil
+是否可以使用 evil 模式？
+目前又一个显而易见的弊端：emacs 原生似乎没有很好支持前进和后退，这个在 code 的时候还是很重要的，当然这么多人都用 emacs 做主力了，应该有另一种工作流能解决这个问题。
+[2019-02-16 Sat 00:18]
+*** 2019-02-17 Sunday
+**** TODO emacs hack v2 
+v1 has been done
+***** v2: 
+
+1. golang complate struct filed
+2. add a self customed layer
+3. minor mode key binds
+
+[2019-02-17 Sun 16:59]
+*** 2019-02-18 Monday
+**** DOING start project from local                                   :work:
+- Note taken on [2019-02-18 Mon 16:40] \\
+  也许可以写一个脚本，项目名称按照参数传入
+[2019-02-18 Mon 13:38]
+***** TODO prefix scripts
+*** 2019-02-19 Tuesday
+**** TODO test jianguo 
+[2019-02-19 Tue 12:28]
