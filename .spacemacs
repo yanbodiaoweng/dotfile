@@ -30,40 +30,61 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(ruby
+     yaml
+     javascript
+     (go :variables
+         go-tab-width 4
+         godoc-at-point-function 'godoc-gogetdoc
+         go-backend 'lsp
+         go-use-gometalinter t
+         go-use-golangci-lint t
+         )
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     lsp
      helm
-     auto-completion
+     deft
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t)
      better-defaults
+     ;;dash
      osx
      ranger
      chinese
      emacs-lisp
-     ;; git
-     ;; markdown
+     git
+     markdown
+     ;;ivy
      org
       (shell :variables
              shell-default-height 30
              shell-default-position 'bottom)
      ;;spell-checking
-     ;; syntax-checking
-     ;;version-control
+     syntax-checking
+     version-control
+     (treemacs :variables
+               treemacs-use-filewatch-mode t
+               treemacs-use-collapsed-directories 3
+               treemacs-lock-width t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
+                                      cnfonts
                                       doom-themes
+                                      exec-path-from-shell
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -138,9 +159,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("hack"
+   dotspacemacs-default-font '(;;"Noto Sans Mono"
+                               ;;"hack"
+                               "ubuntu mono"
                                ;;"Source Code Pro"
-                               :size 13
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -165,7 +188,7 @@ values."
    ;; Setting it to a non-nil value, allows for separate commands under <C-i>
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
-   ;; works in the GUI. (default nil)
+   ;; works i/n the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
    ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
    dotspacemacs-remap-Y-to-y$ nil
@@ -224,13 +247,13 @@ values."
    ;; If non nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native nil
+   dotspacemacs-fullscreen-use-non-native t
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
@@ -266,7 +289,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -307,6 +330,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq tramp-ssh-controlmaster-options
+        "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
    )
 
 (defun dotspacemacs/user-config ()
@@ -317,13 +342,32 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq ns-use-srgb-colorspace nil)
-  (setq powerline-default-separator 'utf-8)
-  (use-package org
-    :config
-    (setq org-startup-indented t))
+  (setq lsp-restart 'ignore)
+  (add-hook 'go-mode #'lsp-go-enable)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize))
+  ;; (setq lsp-print-io t)
+  ;;(setq powerline-default-separator 'utf-8)
+  ;;(use-package org
+  ;;  :config
+  ;;(spacemacs//set-monospaced-font   "Source Code Pro" "Hiragino Sans GB" 14 16)
+
+  (setq org-startup-indented t);;)
+  ;; (setq org-todo-keywords
+  ;;       '((sequence "DOING" "WAITING" "TODO" "|" "DONE" "ABORTED")))
+  ;; (setq org-todo-keywords
+  ;;       '((sequence "TODO" "|" "DONE")
+  ;;          (sequence "MOOC" "STARTED" "|" "COMPLETE" "SUSPENDED")))
+  ;; (setq org-todo-keywords
+  ;;      '((sequence "TODO" "|")
+  ;;        (sequence "RESEARCHING" "WORKING" "FINISHING" "|")
+  ;;        (sequence "|" "DONE")))
   (setq org-todo-keywords
-        '((sequence "TODO" "DOING" "WAITING" "|" "DONE" "ABORTED")))
-  (setq icloud-directory "~/orgfiles")
+        '((sequence "TODO(t)" "|" "DONE(d)")
+          (sequence "DOING(i)" "WAITING(b)" "|" "ABORTED(a)" )
+          ))
+
+  (setq icloud-directory "~/org")
   (setq org-capture-templates
         '(("j" "随手记" entry (file+olp+datetree
                                (lambda()(concat icloud-directory "/journal.org")))
@@ -334,11 +378,61 @@ you should place your code here."
           )
         )
   (setq org-agenda-files (list icloud-directory))
-  (spacemacs//set-monospaced-font   "hack" "Hiragino Sans GB" 14 16)
+  ;; https://github.com/jixiuf/vmacs/blob/master/conf/custom-file.el
+  ;; 如果配置好了， 下面20个汉字与40个英文字母应该等长
+  ;; here are 20 hanzi and 40 english chars, see if they are the same width
+  ;;
+  ;; aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|
+  ;; 你你你你你你你你你你你你你你你你你你你你|
+  ;; ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,|
+  ;; 。。。。。。。。。。。。。。。。。。。。|
+  ;; 1111111111111111111111111111111111111111|
+  ;; 東東東東東東東東東東東東東東東東東東東東|
+  ;; ここここここここここここここここここここ|
+  ;; ｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺ|
+  ;; 까까까까까까까까까까까까까까까까까까까까|
+  ;;(spacemacs//set-monospaced-font   "Source Code Pro" "STFangsong" 14 16)
+  
+  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
+  (setq paradox-github-token "7b3777ba63dcaa5d46ba589512554dd240e61849")
+  ;; (setq cnfonts-use-face-font-rescale t)
+  ;; (defvar my-line-spacing-alist
+  ;;   '((9 . 0.1) (10 . 0.9) (11.5 . 0.2)
+  ;;     (12.5 . 0.2) (14 . 0.2) (16 . 0.2)
+  ;;     (18 . 0.2) (20 . 1.0) (22 . 0.2)
+  ;;     (24 . 0.2) (26 . 0.2) (28 . 0.2)
+  ;;     (30 . 0.2) (32 . 0.2)))
+
+  ;; (defun my-line-spacing-setup (fontsizes-list)
+  ;;   (let ((fontsize (car fontsizes-list))
+  ;;         (line-spacing-alist (copy-list my-line-spacing-alist)))
+  ;;     (dolist (list line-spacing-alist)
+  ;;       (when (= fontsize (car list))
+  ;;         (setq line-spacing-alist nil)
+  ;;         (setq-default line-spacing (cdr list))))))
+
+  ;; (add-hook 'cnfonts-set-font-finish-hook #'my-line-spacing-setup)
+
+  ;; (if (and (fboundp 'daemonp) (daemonp))
+  ;;     (add-hook 'after-make-frame-functions
+  ;;               (lambda (frame)
+  ;;                 (with-selected-frame frame
+  ;;                   (set-face-font 'org-table "-Misc-Fixed-normal-normal-normal-*-18-*-*-*-c-90-iso10646-1"))))
+  ;;   (set-face-font 'org-table "-Misc-Fixed-normal-normal-normal-*-18-*-*-*-c-90-iso10646-1"))
+
+ ;;(flycheck-gometalinter-fast nil)
+  ;; (defun add-pcomplete-to-capf ()
+  ;;   (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+  ;; (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+   ;; (custom-set-faces
+   ;; '(company-tooltip-common
+   ;;   ((t (:inherit company-tooltip :weight bold :underline nil))))
+   ;; '(company-tooltip-common-selection
+  ;;    ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+;; auto-generate cutom variable definitions.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -365,7 +459,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yasnippet-snippets writeroom-mode visual-fill-column symon string-inflection spaceline-all-the-icons password-generator overseer org-brain nameless helm-xref helm-purpose window-purpose imenu-list helm-org-rifle evil-org evil-lion evil-goggles evil-cleverparens paredit editorconfig doom-modeline eldoc-eval shrink-path counsel-projectile counsel swiper ivy chinese-conv centered-cursor-mode browse-at-remote font-lock+ dotenv-mode auto-save-buffers-enhanced save-visited-files focus-autosave-mode super-save real-auto-save all-the-icons memoize doom-Iosvkem-theme pyim pyim-basedict pangu-spacing find-by-pinyin-dired ace-pinyin pinyinlib ranger doom-themes xterm-color unfill shell-pop reveal-in-osx-finder pbcopy osx-trash osx-dictionary org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term launchctl htmlize helm-company helm-c-yasnippet gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-commit with-editor git-gutter fuzzy flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (cnfonts flycheck-gometalinter flycheck-golangci-lint auto-save-buffers-enhanced save-visited-files focus-autosave-mode super-save real-auto-save all-the-icons memoize doom-Iosvkem-theme pyim pyim-basedict pangu-spacing find-by-pinyin-dired ace-pinyin pinyinlib ranger doom-themes xterm-color unfill shell-pop reveal-in-osx-finder pbcopy osx-trash osx-dictionary org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term launchctl htmlize helm-company helm-c-yasnippet gnuplot git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-commit with-editor git-gutter fuzzy flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
