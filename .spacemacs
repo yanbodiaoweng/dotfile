@@ -47,14 +47,16 @@ values."
      ;; ----------------------------------------------------------------
      lsp
      helm
-     deft
+     ;;deft
+     (restclient :variables
+                 restclient-use-org nil)
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup t)
      better-defaults
      ;;dash
      osx
      ranger
-     chinese
+     ;; chinese
      emacs-lisp
      git
      markdown
@@ -76,6 +78,8 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
+                                      srcery-theme
+                                      osx-clipboard
                                       cnfonts
                                       doom-themes
                                       exec-path-from-shell
@@ -152,7 +156,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one
+   dotspacemacs-themes '(;;doom-one
+                         srcery
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -160,8 +165,8 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '(;;"Noto Sans Mono"
-                               ;;"hack"
-                               "ubuntu mono"
+                               "hack"
+                               ;;"ubuntu mono"
                                ;;"Source Code Pro"
                                :size 16
                                :weight normal
@@ -293,7 +298,7 @@ values."
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
-   ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
+;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
@@ -346,27 +351,11 @@ you should place your code here."
   (add-hook 'go-mode #'lsp-go-enable)
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize))
-  ;; (setq lsp-print-io t)
-  ;;(setq powerline-default-separator 'utf-8)
-  ;;(use-package org
-  ;;  :config
-  ;;(spacemacs//set-monospaced-font   "Source Code Pro" "Hiragino Sans GB" 14 16)
-
-  (setq org-startup-indented t);;)
-  ;; (setq org-todo-keywords
-  ;;       '((sequence "DOING" "WAITING" "TODO" "|" "DONE" "ABORTED")))
-  ;; (setq org-todo-keywords
-  ;;       '((sequence "TODO" "|" "DONE")
-  ;;          (sequence "MOOC" "STARTED" "|" "COMPLETE" "SUSPENDED")))
-  ;; (setq org-todo-keywords
-  ;;      '((sequence "TODO" "|")
-  ;;        (sequence "RESEARCHING" "WORKING" "FINISHING" "|")
-  ;;        (sequence "|" "DONE")))
+  (setq org-startup-indented t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "|" "DONE(d)")
           (sequence "DOING(i)" "WAITING(b)" "|" "ABORTED(a)" )
           ))
-
   (setq icloud-directory "~/org")
   (setq org-capture-templates
         '(("j" "随手记" entry (file+olp+datetree
@@ -378,58 +367,51 @@ you should place your code here."
           )
         )
   (setq org-agenda-files (list icloud-directory))
-  ;; https://github.com/jixiuf/vmacs/blob/master/conf/custom-file.el
-  ;; 如果配置好了， 下面20个汉字与40个英文字母应该等长
-  ;; here are 20 hanzi and 40 english chars, see if they are the same width
-  ;;
-  ;; aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|
-  ;; 你你你你你你你你你你你你你你你你你你你你|
-  ;; ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,|
-  ;; 。。。。。。。。。。。。。。。。。。。。|
-  ;; 1111111111111111111111111111111111111111|
-  ;; 東東東東東東東東東東東東東東東東東東東東|
-  ;; ここここここここここここここここここここ|
-  ;; ｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺ|
-  ;; 까까까까까까까까까까까까까까까까까까까까|
-  ;;(spacemacs//set-monospaced-font   "Source Code Pro" "STFangsong" 14 16)
+  (define-key evil-normal-state-map (kbd "M-i") 'evil-jump-forward)
+  (define-key evil-normal-state-map (kbd "M-o") 'evil-jump-backward)
+  ;; pbcopy
+  (use-package osx-clipboard
+    :commands
+    (osx-clipboard-paste-function osx-clipboard-cut-function))
+
+  (defun aj/select-text (text &rest ignore)
+    (if (display-graphic-p)
+        (gui-select-text text)
+      (osx-clipboard-cut-function text)))
+
+  (defun aj/selection-value ()
+    (if (display-graphic-p)
+        (gui-selection-value)
+      (osx-clipboard-paste-function)))
+
+  (setq interprogram-cut-function 'aj/select-text
+        interprogram-paste-function 'aj/selection-value)
+
+  (provide 'init-macos-terminal-copy-paste)
   
-  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
-  (setq paradox-github-token "7b3777ba63dcaa5d46ba589512554dd240e61849")
-  ;; (setq cnfonts-use-face-font-rescale t)
-  ;; (defvar my-line-spacing-alist
-  ;;   '((9 . 0.1) (10 . 0.9) (11.5 . 0.2)
-  ;;     (12.5 . 0.2) (14 . 0.2) (16 . 0.2)
-  ;;     (18 . 0.2) (20 . 1.0) (22 . 0.2)
-  ;;     (24 . 0.2) (26 . 0.2) (28 . 0.2)
-  ;;     (30 . 0.2) (32 . 0.2)))
-
-  ;; (defun my-line-spacing-setup (fontsizes-list)
-  ;;   (let ((fontsize (car fontsizes-list))
-  ;;         (line-spacing-alist (copy-list my-line-spacing-alist)))
-  ;;     (dolist (list line-spacing-alist)
-  ;;       (when (= fontsize (car list))
-  ;;         (setq line-spacing-alist nil)
-  ;;         (setq-default line-spacing (cdr list))))))
-
-  ;; (add-hook 'cnfonts-set-font-finish-hook #'my-line-spacing-setup)
-
-  ;; (if (and (fboundp 'daemonp) (daemonp))
-  ;;     (add-hook 'after-make-frame-functions
-  ;;               (lambda (frame)
-  ;;                 (with-selected-frame frame
-  ;;                   (set-face-font 'org-table "-Misc-Fixed-normal-normal-normal-*-18-*-*-*-c-90-iso10646-1"))))
-  ;;   (set-face-font 'org-table "-Misc-Fixed-normal-normal-normal-*-18-*-*-*-c-90-iso10646-1"))
-
- ;;(flycheck-gometalinter-fast nil)
-  ;; (defun add-pcomplete-to-capf ()
-  ;;   (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-  ;; (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-   ;; (custom-set-faces
-   ;; '(company-tooltip-common
-   ;;   ((t (:inherit company-tooltip :weight bold :underline nil))))
-   ;; '(company-tooltip-common-selection
-  ;;    ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(org-table ((t (:foreground "#6c71c4" :family "Ubuntu Mono")))))
+  ;; ;; (define-key evil-normal-state-map (kbd "C-<tab>") 'org-cycle)
+   (setq paradox-github-token "7b3777ba63dcaa5d46ba589512554dd240e61849")
   )
+
+;; https://github.com/jixiuf/vmacs/blob/master/conf/custom-file.el
+;; 如果配置好了， 下面20个汉字与40个英文字母应该等长
+;; here are 20 hanzi and 40 english chars, see if they are the same width
+;;
+;; aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|
+;; 你你你你你你你你你你你你你你你你你你你你|
+;; ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,|
+;; 。。。。。。。。。。。。。。。。。。。。|
+;; 1111111111111111111111111111111111111111|
+;; 東東東東東東東東東東東東東東東東東東東東|
+;; ここここここここここここここここここここ|
+;; ｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺｺ|
+;; 까까까까까까까까까까까까까까까까까까까까|
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate cutom variable definitions.
