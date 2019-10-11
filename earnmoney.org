@@ -1,8 +1,0 @@
-* DOING [#B] 调研小工具的可行性                                      :@money:
-DEADLINE: <2019-01-05 Sat>
-+ 淘宝
-+ github
-+ 有潜力的需求
-* WAITING [#B] 股票                                                               :money:
-* [#A] 五年内的财富规划
-* 爬虫自动发微博
