@@ -396,7 +396,6 @@ you should place your code here."
    ;; If there is more than one, they won't work right.
    '(org-table ((t (:foreground "#6c71c4" :family "Ubuntu Mono")))))
   ;; ;; (define-key evil-normal-state-map (kbd "C-<tab>") 'org-cycle)
-   (setq paradox-github-token "7b3777ba63dcaa5d46ba589512554dd240e61849")
   )
 
 ;; https://github.com/jixiuf/vmacs/blob/master/conf/custom-file.el
