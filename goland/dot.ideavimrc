@@ -1,0 +1,247 @@
+" Selected IntelliSpace modules
+"source ~/intelli-space/spacemacs.vim
+"source ~/intelli-space/extra.vim
+"source ~/intelli-space/major.vim
+" source ~/intelli-space/hybrid.vim
+
+
+
+" <SPC> as the leader key
+let mapleader = " "
+
+" Show current vim mode
+set showmode
+
+" Use the clipboard register '*' for all yank, delete, change and put operations
+" which would normally go to the unnamed register.
+set clipboard+=unnamed
+
+" Search as characters are entered
+set incsearch
+
+" Highlight search results
+set hlsearch
+
+" If a pattern contains an uppercase letter, searching is case sensitive,
+" otherwise, it is not.
+set ignorecase
+set smartcase
+
+" Emulate vim-surround. Commands: ys, cs, ds, S.
+set surround
+
+nnoremap <leader>r    :action RecentFiles<CR>
+vnoremap <leader>r    <Esc>:action RecentFiles<CR>
+
+" Close current tab
+nnoremap <leader>bd    :action CloseContent<CR>
+vnoremap <leader>bd    <Esc>:action CloseContent<CR>
+
+" Next Tab
+nnoremap <leader>bn    :action NextTab<CR>
+vnoremap <leader>bn    <Esc>:action NextTab<CR>
+
+" Substitute the whole content of the buffer with the content of your clipboard
+nnoremap <leader>bP    ggVGp<CR>
+vnoremap <leader>bP    <Esc>ggVGp<CR>
+
+" Previous Tab
+nnoremap <leader>bp    :action PreviousTab<CR>
+vnoremap <leader>bp    <Esc>:action PreviousTab<CR>
+
+" Open a new scratch buffer
+nnoremap <leader>bs    :action NewScratchBuffer<CR>
+vnoremap <leader>bs    <Esc>:action NewScratchBuffer<CR>
+
+" Reopen last closed tab
+nnoremap <leader>bu    :action ReopenClosedTab<CR>
+vnoremap <leader>bu    <Esc>:action ReopenClosedTab<CR>
+
+" Close a window together with its tabs
+nnoremap <leader>bx    :action CloseAllEditors<CR>
+vnoremap <leader>bx    <Esc>:action CloseAllEditors<CR>
+
+" Copy whole buffer
+nnoremap <leader>bY    :%y<CR>
+vnoremap <leader>bY    <Esc>:%y<CR>
+
+
+" Comment lines
+nnoremap <leader>cl    :action CommentByLineComment<CR>
+vnoremap <leader>cl    :action CommentByLineComment<CR>:action VimVisualExitMode<CR>
+
+" Comment paragraph
+nnoremap <leader>cp    vip<CR>:action CommentByLineComment<CR>:action VimVisualExitMode<CR>
+vnoremap <leader>cp    <Esc>vip<CR>:action CommentByLineComment<CR>:action VimVisualExitMode<CR>
+
+" List errors
+nnoremap <leader>el    :action CodeInspection.OnEditor<CR>
+vnoremap <leader>el    <Esc>:action CodeInspection.OnEditor<CR>
+
+" Go to previous error
+nnoremap <leader>eN    :action GotoPreviousError<CR>
+vnoremap <leader>eN    <Esc>:action GotoPreviousError<CR>
+
+" Go to next error
+nnoremap <leader>en    :action GotoNextError<CR>
+vnoremap <leader>en    <Esc>:action GotoNextError<CR>
+
+" Go to previous error
+nnoremap <leader>ep    :action GotoPreviousError<CR>
+vnoremap <leader>ep    <Esc>:action GotoPreviousError<CR>
+
+" Select inspection by name
+nnoremap <leader>es    :action RunInspection<CR>
+vnoremap <leader>es    <Esc>:action RunInspection<CR>
+
+" Explain error at point
+nnoremap <leader>ex    :action ShowErrorDescription<CR>
+vnoremap <leader>ex    <Esc>:action ShowErrorDescription<CR>
+
+"nnoremap <leader>pD    :action ActivateProjectToolWindow<CR>
+vnoremap <leader>pD    <Esc>:action ActivateProjectToolWindow<CR>
+n Reload .ideavimrc
+nnoremap <leader>fer    :source ~/.ideavimrc<CR>
+vnoremap <leader>fer    <Esc>:source ~/.ideavimrc<CR>
+
+" Find files
+nnoremap <leader>ff    :action GotoFile<CR>
+vnoremap <leader>ff    <Esc>:action GotoFile<CR>
+
+" Search in project
+nnoremap <leader>fp    :action FindInPath<CR>
+vnoremap <leader>fp    <Esc>:action FindInPath<CR>
+
+" Show local changes (git status)
+nnoremap <leader>gs    :action Vcs.Show.Local.Changes<CR>
+vnoremap <leader>gs    <Esc>:action Vcs.Show.Local.Changes<CR>
+
+" Show log of current file
+nnoremap <leader>gl    :action Vcs.ShowTabbedFileHistory<CR>
+vnoremap <leader>gl    <Esc>:action Vcs.ShowTabbedFileHistory<CR>
+
+" Execute an action. Like <M-x>
+nnoremap <leader><Space>    :action GotoAction<CR>
+vnoremap <leader><Space>    <Esc>:action GotoAction<CR>
+
+" Focus last buffer
+nnoremap <leader><tab>    :action VimFilePrevious<CR>
+vnoremap <leader><tab>    <Esc>:action VimFilePrevious<CR>
+
+" Open the terminal window (use :! for a single shell cmd)
+nnoremap <leader>\    :action ActivateTerminalToolWindow<CR>
+vnoremap <leader>\    <Esc>:action ActivateTerminalToolWindow<CR>
+
+" Comment lines
+nnoremap <leader>;    :action CommentByLineComment<CR>
+vnoremap <leader>;     :action CommentByLineComment<CR>:action VimVisualExitMode<CR>
+
+" Open all folds
+nnoremap zr    :action ExpandAllRegions<CR>
+vnoremap zr    :action ExpandAllRegions<CR>
+
+" Collapse all regions
+nnoremap zm    :action CollapseAllRegions<CR>
+vnoremap zm    :action CollapseAllRegions<CR>
+
+" Jump to previously visited location
+nnoremap <c-i>    :action Forward<CR>
+
+" Jump to lately visited location
+nnoremap <c-o>    :action Back<CR>
+
+
+" Go to next change
+nnoremap g,    :action JumpToNextChange<CR>
+vnoremap g,    :action JumpToNextChange<CR>
+
+" Go to last change
+nnoremap g;    :action JumpToLastChange<CR>
+vnoremap g;    :action JumpToLastChange<CR>
+
+" Toggle between implementation file and its test file
+nnoremap <leader>gt    :action GotoTest<CR>
+vnoremap <leader>gt    <Esc>:action GotoTest<CR>
+
+
+" Recent projects
+nnoremap <leader>pp    :action ManageRecentProjects<CR>
+vnoremap <leader>pp    <Esc>:action ManageRecentProjects<CR>
+
+nnoremap <leader>qq    :action CloseProject<CR>
+vnoremap <leader>qq    <Esc>:action CloseProject<CR>
+
+" Show registers
+nnoremap <leader>e    :reg<CR>
+vnoremap <leader>e    <Esc>:reg<CR>
+
+" Clear search highlights.
+nnoremap <leader>sc    :nohlsearch<CR>
+vnoremap <leader>sc    <Esc>:nohlsearch<CR>
+
+" Highlight current symbol. Do it again to toggle highlight.
+nnoremap <leader>sh    :action HighlightUsagesInFile<CR>
+vnoremap <leader>sh    <Esc>:action HighlightUsagesInFile<CR>
+
+" Search in project. Unfortunately <leader>/ does not work.
+nnoremap <leader>sp    :action FindInPath<CR>
+vnoremap <leader>sp    <Esc>:action FindInPath<CR>
+
+" Search everywhere
+nnoremap <leader>ss    :action SearchEverywhere<CR>
+vnoremap <leader>ss    <Esc>:action SearchEverywhere<CR>
+
+
+" Split window right
+nnoremap <leader>wv    :action SplitVertically<CR>
+vnoremap <leader>wv    <Esc>:action SplitVertically<CR>
+
+" Split window below
+nnoremap <leader>ws    :action SplitHorizontally<CR>
+vnoremap <leader>ws    <Esc>:action SplitHorizontally<CR>
+
+" Close window
+nnoremap <leader>wd    :action VimWindowClose<CR>
+vnoremap <leader>wd    <esc>:action VimWindowClose<CR>
+nnoremap <leader>wx    :action VimWindowClose<CR>
+vnoremap <leader>wx    <esc>:action VimWindowClose<CR>
+
+nnoremap <c-h>         :action VimWindowLeft<CR>
+vnoremap <c-h>        <Esc>:action VimWindowLeft<CR>
+
+nnoremap <c-l>         :action VimWindowRight<CR>
+vnoremap <c-l>        <Esc>:action VimWindowRight<CR>
+
+nnoremap <c-j>         :action VimWindowDown<CR>
+vnoremap <c-j>        <Esc>:action VimWindowDown<CR>
+
+nnoremap <c-k>         :action VimWindowUp<CR>
+vnoremap <c-k>        <Esc>:action VimWindowUp<CR>
+
+
+nnoremap ;   :action GotoDeclaration<CR>
+vnoremap ;   <Esc>:action GotoDeclaration<CR>
+
+" Go to implementation
+nnoremap s    :action GotoImplementation<CR>
+vnoremap s    <Esc>:action GotoImplementation<CR>
+
+" Go to type declaration
+nnoremap '    :action GotoTypeDeclaration<CR>
+vnoremap '    <Esc>:action GotoTypeDeclaration<CR>
+
+" Find usages for symbol
+nnoremap r      :action ShowUsages<CR>
+vnoremap r      <Esc>:action ShowUsages<CR>
+
+" go to next/last change
+nnoremap gn      :action VcsShowNextChangeMarker<CR>
+vnoremap gn      <Esc>:action VcsShowNextChangeMarker<CR>
+
+nnoremap gp      :action VcsShowPrevChangeMarker<CR>
+vnoremap gp     <Esc>:action VcsShowPrevChangeMarker<CR>
+
+
+" repeat last command
+noremap <C-P> @:<CR>
+"voremap <C-P> @:<CR>
