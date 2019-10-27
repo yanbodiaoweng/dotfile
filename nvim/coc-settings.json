@@ -1,0 +1,22 @@
+{
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+		  "initializationOptions": {
+        "usePlaceholders": true,
+				"completeUnimported": true,
+				//"buildFlags": "-tags gandalf_tests",
+				"env": {
+						"GOFLAGS": "-tags=gandalf_tests"
+				}
+      }
+    },
+		"javascript":{
+				"command": "tsserver",
+				"filetypes": ["js", "ts"]
+		},
+  },
+	"smartf.timeout": 10000
+}
