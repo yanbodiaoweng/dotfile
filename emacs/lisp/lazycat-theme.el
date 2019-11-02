@@ -5,7 +5,7 @@
   "The default font size.")
 (cond
  ((featurep 'cocoa)
-  (setq emacs-font-name "Monaco"))
+  (setq emacs-font-name "Hack"))
  ((string-equal system-type "gnu/linux")
   (setq emacs-font-name "Droid Sans Mono")))
 (if (display-grayscale-p)
@@ -20,7 +20,7 @@
   )
 
 ;; Set line height.
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 140)
 
 ;; Make fringe mini size.
 (set-fringe-mode '(0 . 0))
