@@ -1,9 +1,10 @@
-;; fix the PATH variable
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(when window-system (set-exec-path-from-shell-PATH))
+;; ;; fix the PATH variable
+;; (defun set-exec-path-from-shell-PATH ()
+;;   (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+;;     (setenv "PATH" path-from-shell)
+;;     (setq exec-path (split-string path-from-shell path-separator))))
+;; (when window-system (set-exec-path-from-shell-PATH))
+
 
 (require 'package)
 (setq package-archives '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
@@ -16,6 +17,12 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package all-the-icons
   :ensure t)
@@ -129,87 +136,6 @@
    expand-region-contract-fast-key "V"
    expand-region-reset-fast-key "r"))
 
-;; (use-package treemacs
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (with-eval-after-load 'winum
-;;     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-;;   :config
-;;   (progn
-;;     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-;;           treemacs-deferred-git-apply-delay      0.5
-;;           treemacs-display-in-side-window        t
-;;           treemacs-eldoc-display                 t
-;;           treemacs-file-event-delay              5000
-;;           treemacs-file-follow-delay             0.2
-;;           treemacs-follow-after-init             t
-;;           treemacs-git-command-pipe              ""
-;;           treemacs-goto-tag-strategy             'refetch-index
-;;           treemacs-indentation                   2
-;;           treemacs-indentation-string            " "
-;;           treemacs-is-never-other-window         nil
-;;           treemacs-max-git-entries               5000
-;;           treemacs-missing-project-action        'ask
-;;           treemacs-no-png-images                 nil
-;;           treemacs-no-delete-other-windows       t
-;;           treemacs-project-follow-cleanup        nil
-;;           treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-;;           treemacs-position                      'left
-;;           treemacs-recenter-distance             0.1
-;;           treemacs-recenter-after-file-follow    nil
-;;           treemacs-recenter-after-tag-follow     nil
-;;           treemacs-recenter-after-project-jump   'always
-;;           treemacs-recenter-after-project-expand 'on-distance
-;;           treemacs-show-cursor                   nil
-;;           treemacs-show-hidden-files             t
-;;           treemacs-silent-filewatch              nil
-;;           treemacs-silent-refresh                nil
-;;           treemacs-sorting                       'alphabetic-desc
-;;           treemacs-space-between-root-nodes      t
-;;           treemacs-tag-follow-cleanup            t
-;;           treemacs-tag-follow-delay              1.5
-;;           treemacs-width                         35)
-
-;;     ;; The default width and height of the icons is 22 pixels. If you are
-;;     ;; using a Hi-DPI display, uncomment this to double the icon size.
-;;     ;;(treemacs-resize-icons 44)
-
-;;     (treemacs-follow-mode t)
-;;     (treemacs-filewatch-mode t)
-;;     (treemacs-fringe-indicator-mode t)
-;;     (pcase (cons (not (null (executable-find "git")))
-;;                  (not (null treemacs-python-executable)))
-;;       (`(t . t)
-;;        (treemacs-git-mode 'deferred))
-;;       (`(t . _)
-;;        (treemacs-git-mode 'simple))))
-;;   :bind
-;;   (:map global-map
-;;         ("M-0"       . treemacs-select-window)
-;;         ("C-x t 1"   . treemacs-delete-other-windows)
-;;         ("C-x t t"   . treemacs)
-;;         ("C-x t B"   . treemacs-bookmark)
-;;         ("C-x t C-t" . treemacs-find-file)
-;;         ("C-x t M-t" . treemacs-find-tag)))
-
-;; (use-package treemacs-evil
-;;   :after treemacs evil
-;;   :ensure t)
-
-;; (use-package treemacs-projectile
-;;   :after treemacs projectile
-;;   :ensure t)
-
-;; (use-package treemacs-icons-dired
-;;   :after treemacs dired
-;;   :ensure t
-;;   :config (treemacs-icons-dired-mode))
-
-;; (use-package treemacs-magit
-;;   :after treemacs magit
-;;   :ensure t)
-
 
 (use-package ace-window
   :ensure t)
@@ -272,16 +198,19 @@
   :init
   (setq
    ;; log time when task is finished
-   org-log-done 'time
+   org-log-done 'note
    ;; create a logbook entry
    org-log-into-drawer t
    ;; org directory and agenda files
    org-directory "~/org"
    org-agenda-files (list org-directory)
+   org-agenda-span 'day
    org-startup-indented t
    ;; org keywords and faces
-   org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)")
-                       (sequence "DOING(i)" "WAITING(b@/!)" "|" "ABORTED(a@/!)" )
+   org-todo-keywords '((sequence "TODO(t)" "DOING(i)" "WAITING(b@/!)" "|" "DONE(d)" "ABORTED(a@/!)")
+                       (sequence "IDEA(z)" "IDEAING(x)" "|" "IDEAED(c@/!)")
+                       (sequence "TASK(v)" "TASKING(b)" "|" "TASKED(n@/!)")
+                       (sequence  "|" "ABORTED(a@/!)")
                        )
    ;; dracula-themed faces
    org-todo-keyword-faces (quote
@@ -289,8 +218,13 @@
                             ("DOING" :foreground "#8be9fd" :weight bold)
                             ("DONE" :foreground "#50fa7b" :weight bold)
                             ("WAITING" :foreground "#ffb86c" :weight bold)
-                            ("HOLD" :foreground "#bd93f9" :weight bold)
-                            ("ABORTED" :foreground "#50fa7b" :weight bold)))
+                            ("IDEA"  :foreground "#f5ce42" :weight bold)
+                            ("TASKING"  :foreground "#42f56f" :weight bold)
+                            ("TASKED"  :foreground "#50fa7b" :weight bold)
+                            ("TASK"  :foreground "#d93c1c" :weight bold)
+                            ("IDEAING"  :foreground "#246142" :weight bold)
+                            ("IDEAED"  :foreground "#50fa7b" :weight bold)
+                            ("ABORTED" :foreground "#5274a3" :weight bold)))
    ;; state triggers
    org-todo-state-tags-triggers (quote
                                  (("CANCELED" ("CANCELED" . t))
@@ -322,7 +256,12 @@
      ))
   :config
   (set-face-attribute 'org-level-1 nil :height 1.0)
-  (set-face-attribute 'org-level-2 nil :height 1.0))
+  (set-face-attribute 'org-level-2 nil :height 1.0)
+  (setq org-agenda-time-grid
+        (quote
+         ((today)
+          (900 1100 1300 1500 1700)
+          "......" "----------------"))))
 
 (use-package org-bullets
   :ensure t
@@ -330,7 +269,58 @@
   :init
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-;; (use-package ibuffer-vc
+;; (use-package org-habit
+;;   :ensure t)
+
+;; (use-package org-super-agenda
+;;   :ensure t
+;;   :after org
+;;   :hook ((org-agenda-mode . org-super-agenda-mode))
+;;   :init
+;;   (require 'org-habit)
+;;   (setq ((org-super-agenda-groups
+;;           '(;; Each group has an implicit boolean OR operator between its selectors.
+;;             (:name "Today"  ; Optionally specify section name
+;;                    :time-grid t  ; Items that appear on the time grid
+;;                    :todo "TODAY")  ; Items that have this TODO keyword
+;;             (:name "Important"
+;;                    ;; Single arguments given alone
+;;                    :tag "bills"
+;;                    :priority "A")
+;;             ;; Set order of multiple groups at once
+;;             (:order-multi (2 (:name "Shopping in town"
+;;                                     ;; Boolean AND group matches items that match all subgroups
+;;                                     :and (:tag "shopping" :tag "@town"))
+;;                              (:name "Food-related"
+;;                                     ;; Multiple args given in list with implicit OR
+;;                                     :tag ("food" "dinner"))
+;;                              (:name "Personal"
+;;                                     :habit t
+;;                                     :tag "personal")
+;;                              (:name "Space-related (non-moon-or-planet-related)"
+;;                                     ;; Regexps match case-insensitively on the entire entry
+;;                                     :and (:regexp ("space" "NASA")
+;;                                                   ;; Boolean NOT also has implicit OR between selectors
+;;                                                   :not (:regexp "moon" :tag "planet")))))
+;;             ;; Groups supply their own section names when none are given
+;;             (:todo "WAITING" :order 8)  ; Set order of this section
+;;             (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+;;                    ;; Show this group at the end of the agenda (since it has the
+;;                    ;; highest number). If you specified this group last, items
+;;                    ;; with these todo keywords that e.g. have priority A would be
+;;                    ;; displayed in that group instead, because items are grouped
+;;                    ;; out in the order the groups are listed.
+;;                    :order 9)
+;;             (:priority<= "B"
+;;                          ;; Show this section after "Today" and "Important", because
+;;                          ;; their order is unspecified, defaulting to 0. Sections
+;;                          ;; are displayed lowest-number-first.
+;;                          :order 1)
+;;             ;; After the last group, the agenda will display items that didn't
+;;             ;; match any of these groups, with the default order position of 99
+;;             )))
+;;         (org-agenda nil "a")))
+;; ;; (use-package ibuffer-vc
 ;;   :ensure t
 ;;   :defer 5
 ;;   :init
@@ -550,6 +540,42 @@
 (setq show-paren-delay 0
       show-paren-style 'parenthesis)
 (setq uniquify-buffer-name-style 'post-forward)
+
+(custom-set-faces
+ '(default ((t (:background "black" :foreground "#137D11")))))
+
+(if (featurep 'cocoa)
+    (progn
+      ;; 在Mac平台, Emacs不能进入Mac原生的全屏模式,否则会导致 `make-frame' 创建时也集成原生全屏属性后造成白屏和左右滑动现象.
+      ;; 所以先设置 `ns-use-native-fullscreen' 和 `ns-use-fullscreen-animation' 禁止Emacs使用Mac原生的全屏模式.
+      ;; 而是采用传统的全屏模式, 传统的全屏模式, 只会在当前工作区全屏,而不是切换到Mac那种单独的全屏工作区,
+      ;; 这样执行 `make-frame' 先关代码或插件时,就不会因为Mac单独工作区左右滑动产生的bug.
+      ;;
+      ;; Mac平台下,不能直接使用 `set-frame-parameter' 和 `fullboth' 来设置全屏,
+      ;; 那样也会导致Mac窗口管理器直接把Emacs窗口扔到单独的工作区, 从而对 `make-frame' 产生同样的Bug.
+      ;; 所以, 启动的时候通过 `set-frame-parameter' 和 `maximized' 先设置Emacs为最大化窗口状态, 启动5秒以后再设置成全屏状态,
+      ;; Mac就不会移动Emacs窗口到单独的工作区, 最终解决Mac平台下原生全屏窗口导致 `make-frame' 左右滑动闪烁的问题.
+      (setq ns-use-native-fullscreen nil)
+      (setq ns-use-fullscreen-animation nil)
+
+      ;; 默认先最大化。
+      (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+
+      (run-at-time "2sec" nil
+                   (lambda ()
+                     (toggle-frame-fullscreen)
+                     ))
+      ))
+(transient-mark-mode 1)                 ;标记高亮
+(setq mouse-yank-at-point t)            ;粘贴于光标处,而不是鼠标指针处
+(setq default-major-mode 'text-mode)    ;设置默认地主模式为TEXT模式
+(setq inhibit-compacting-font-caches t) ;使用字体缓存，避免卡顿
+(setq frame-resize-pixelwise t) ;设置缩放的模式,避免Mac平台最大化窗口以后右边和下边有空隙
+;; 不显示 *scratch*
+(defun remove-scratch-buffer ()
+  (if (get-buffer "*scratch*")
+      (kill-buffer "*scratch*")))
+(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
 
 (use-package keybinds
   :load-path "init")
